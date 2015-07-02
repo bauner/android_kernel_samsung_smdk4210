@@ -2040,13 +2040,8 @@ int mshci_add_host(struct mshci_host *host)
 	mmc->ops = &mshci_ops;
 	mmc->f_min = 400000;
 	mmc->f_max = host->max_clk;
-	/*
-	 * removed MMC_CAP_ERASE to avoid killing faulty emmc chips
-	 *
-	 * mmc->caps |= MMC_CAP_SDIO_IRQ | MMC_CAP_ERASE;
-	 * 
-	 */
-	mmc->caps |= MMC_CAP_SDIO_IRQ;
+	mmc->caps |= MMC_CAP_SDIO_IRQ | MMC_CAP_ERASE;
+
 	mmc->caps |= MMC_CAP_4_BIT_DATA;
 
 	mmc->ocr_avail = 0;
