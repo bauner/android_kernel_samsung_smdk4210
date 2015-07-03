@@ -28,8 +28,6 @@
 #include <mach/cpufreq.h>
 #include <linux/input/mt.h>
 
-#include "../keyboard/cypress/cypress-touchkey.h"
-
 #define OBJECT_TABLE_START_ADDRESS	7
 #define OBJECT_TABLE_ELEMENT_SIZE	6
 
@@ -1339,10 +1337,6 @@ static void report_input_data(struct mxt224_data *data)
 			copy_data->lock_status = 1;
 		}
 	}
-
-    /* tell cypress keypad we had finger activity */
-    touchscreen_state_report(touch_is_pressed);
-
 }
 
 void palm_recovery(void)
@@ -2914,6 +2908,7 @@ static ssize_t set_mxt_update_show(struct device *dev,
 		copy_data->firm_status_data = 3;
 		printk(KERN_ERR
 			"[TSP The firmware update failed(%d)\n", error);
+		enable_irq(data->client->irq);
 		return error;
 	} else {
 		dev_dbg(dev, "The firmware update succeeded\n");
